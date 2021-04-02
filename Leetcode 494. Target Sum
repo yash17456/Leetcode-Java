@@ -1,0 +1,37 @@
+https://leetcode.com/problems/target-sum/
+
+class Solution 
+{
+    HashMap<String, Integer> map = new HashMap<String, Integer>();
+    public int findTargetSumWays(int[] nums, int S) 
+    {
+        if(nums.length == 0)
+            return 0;
+        
+        return findWays(nums, 0, S);
+    }
+    
+    public int findWays(int nums[], int index, int remaining)
+    {
+        if(index == nums.length)
+        {
+            if(remaining == 0)
+                return 1;
+            return 0;
+        }
+        
+        String key = Integer.toString(index)+"->"+Integer.toString(remaining);   // creating a key for the map.
+        
+        if(map.containsKey(key))                                                 //checking if the map has the soluton to the current subproblem.
+            return map.get(key);
+        
+        int add = findWays(nums, index + 1, remaining + nums[index]);
+        int subtract = findWays(nums, index + 1, remaining - nums[index]);
+        
+        map.put(key, add + subtract);                                             //Adding the solution to the map so that I don't solve the same subproblem agin.
+                
+        return add + subtract;
+        
+    }
+}
+
