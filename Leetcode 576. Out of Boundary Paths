@@ -1,0 +1,48 @@
+https://leetcode.com/problems/out-of-boundary-paths/
+
+
+class Solution 
+{
+    //HashSet<Pair<Integer, Integer>> set = new HashSet<Pair<Integer, Integer>>();
+    HashMap<String, Integer> map = new HashMap<String, Integer>();
+    public int findPaths(int m, int n, int N, int i, int j) 
+    {
+        if(N == 0)
+            return 0;
+        
+        else
+            return findtotalPaths(i, j, m, n, N);
+            
+    }
+    
+    public int findtotalPaths(int curr_x, int curr_y, int rows, int cols, int remaining)
+    {
+        int count = 0;
+        
+        if(curr_x < 0 || curr_x >= rows || curr_y < 0 || curr_y >= cols)
+            return 1;
+        
+        if(remaining == 0)
+            return 0;
+        
+        String key = Integer.toString(remaining)+"->"+Integer.toString(curr_x)+"->"+Integer.toString(curr_y);
+        
+        if(map.containsKey(key))      //checking if my map contains the solution.
+            return map.get(key);
+        
+        
+        int pos[][] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        
+        
+        for(int i = 0; i < pos.length; i++)
+        {
+            int new_x = curr_x + pos[i][0];
+            int new_y = curr_y + pos[i][1];
+            count = (count + (findtotalPaths(new_x, new_y, rows, cols, remaining - 1))) % (int)(Math.pow(10, 9) + 7);
+        }
+        
+        map.put(key, count);       // putting the solution in my map so that I don't solve the same subproblem again.
+        
+        return count;
+    }
+}
