@@ -1,0 +1,83 @@
+https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+
+class Solution 
+{
+    HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+    public List<String> letterCombinations(String digits) 
+    {
+        ArrayList<String> empty = new ArrayList<String>();
+        if(digits.length() == 0)
+            return empty;
+        
+        Map_Setter();                                                                                  // This function will fill the input values in the map ex - 2 -> [a,b,c]
+        
+        if(digits.length() == 1)
+            return map.get(digits);
+        
+        return Get_Combinations(0, digits.length() - 1, digits);
+    }
+    
+    public ArrayList<String> Get_Combinations(int start, int end, String digits)
+    {
+        if(start == end)
+            return map.get(Character.toString(digits.charAt(start)));
+            
+        int mid = (start + end) / 2;
+        
+        if(!map.containsKey(digits.substring(start, mid + 1)))
+            map.put(digits.substring(start, mid + 1), Get_Combinations(start, mid, digits));
+        
+        if(!map.containsKey(digits.substring(mid + 1, end + 1)))
+            map.put(digits.substring(mid + 1, end + 1), Get_Combinations(mid + 1, end, digits));
+        
+        return (ArrayList<String>)Combination(map.get(digits.substring(start, mid + 1)), map.get(digits.substring(mid + 1, end + 1)));
+        
+    }
+    
+    public List<String> Combination(List<String> Prefix, List<String> Suffix)
+    {
+        ArrayList<String> permutations = new ArrayList<String>();
+        for(String prefix : Prefix)
+        {
+            for(String suffix : Suffix)
+                permutations.add(prefix + suffix);
+        }
+        
+        return permutations;
+    }
+    
+    public void Map_Setter()
+    {
+        ArrayList<String> two = new ArrayList<String>();
+        two.add("a"); two.add("b"); two.add("c");
+        map.put("2", two);
+        
+        ArrayList<String> three = new ArrayList<String>();
+        three.add("d"); three.add("e"); three.add("f");
+        map.put("3", three);
+        
+        ArrayList<String> four = new ArrayList<String>();
+        four.add("g"); four.add("h"); four.add("i");
+        map.put("4", four);
+        
+        ArrayList<String> five = new ArrayList<String>();
+        five.add("j"); five.add("k"); five.add("l");
+        map.put("5", five);
+        
+        ArrayList<String> six = new ArrayList<String>();
+        six.add("m"); six.add("n"); six.add("o");
+        map.put("6", six);
+        
+        ArrayList<String> seven = new ArrayList<String>();
+        seven.add("p"); seven.add("q"); seven.add("r"); seven.add("s");
+        map.put("7", seven);
+        
+        ArrayList<String> eight = new ArrayList<String>();
+        eight.add("t"); eight.add("u"); eight.add("v");
+        map.put("8", eight);
+        
+        ArrayList<String> nine = new ArrayList<String>();
+        nine.add("w"); nine.add("x"); nine.add("y"); nine.add("z");
+        map.put("9", nine);
+    }
+}
